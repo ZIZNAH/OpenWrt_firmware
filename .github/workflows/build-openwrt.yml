@@ -50,7 +50,9 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        # ImmortalWrt
+        sudo -E apt-get -qq full-upgrade
+        sudo -E apt-get -qq install $(curl -fsSL raw.githubusercontent.com/zoengzihaam/openwrt-list/master/depends-ubuntu-1804)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -177,16 +179,18 @@ jobs:
     - name: Upload OpenWrt Firmware to Release
       uses: ncipollo/release-action@v1
       with:
-        tag: openwrt_armvirt_v8_${{ env.PACKAGED_OUTPUTDATE }}
+        tag: openwrt_N1_${{ env.PACKAGED_OUTPUTDATE }}
         artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         allowUpdates: true
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          This is OpenWrt firmware for Armvirt 64
+          This is OpenWrt firmware for N1
           * Firmware information
           Default IP: 192.168.1.1
           Default username: root
           Default password: password
+          * Phicomm N1 install to emmc:
+          /root/install-to-emmc.sh
 
 #     - name: Upload firmware to release
 #       uses: softprops/action-gh-release@v1
